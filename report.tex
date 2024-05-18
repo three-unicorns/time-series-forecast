@@ -4,7 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[lithuanian]{babel}
 \usepackage[T1]{fontenc}
-
+\renewcommand\IEEEkeywordsname{Raktažodžiai}
 
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 \usepackage{cite}
@@ -27,61 +27,71 @@
 
 \begin{document}
 
-\title{Komandinės užduoties tema}
+\title{Orų prognozių modelių lyginamoji analizė}
 
-\author{\IEEEauthorblockN{Vardas Pavardė}
+\author{\IEEEauthorblockN{Liudas Kasperavičius}
 \IEEEauthorblockA{\textit{Informatikos institutas} \\
-\textit{Matematikos if informatikos fakultetas}\\
+\textit{Matematikos ir informatikos fakultetas}\\
 Vilnius, Lietuva \\
-epastas@epastas.lt}
+liudas.kasperavicius@mif.stud.vu.lt}
 \and
-\IEEEauthorblockN{Vardas Pavardė}
+\IEEEauthorblockN{Arnas Vaicekauskas}
 \IEEEauthorblockA{\textit{Informatikos institutas} \\
-\textit{Matematikos if informatikos fakultetas}\\
+\textit{Matematikos ir informatikos fakultetas}\\
 Vilnius, Lietuva \\
-epastas@epastas.lt}
+arnas.vaicekauskas@mif.stud.vu.lt}
 \and
-\IEEEauthorblockN{Vardas Pavardė}
+\IEEEauthorblockN{Rugilė Vasaitytė}
 \IEEEauthorblockA{\textit{Informatikos institutas} \\
-\textit{Matematikos if informatikos fakultetas}\\
+\textit{Matematikos ir  informatikos fakultetas}\\
 Vilnius, Lietuva \\
-epastas@epastas.lt}
-\and
-\IEEEauthorblockN{Vardas Pavardė}
-\IEEEauthorblockA{\textit{Informatikos institutas} \\
-\textit{Matematikos if informatikos fakultetas}\\
-Vilnius, Lietuva \\
-epastas@epastas.lt}
-\and
-\IEEEauthorblockN{Vardas Pavardė}
-\IEEEauthorblockA{\textit{Informatikos institutas} \\
-\textit{Matematikos if informatikos fakultetas}\\
-Vilnius, Lietuva \\
-epastas@epastas.lt}
-\and
-\IEEEauthorblockN{Vardas Pavardė}
-\IEEEauthorblockA{\textit{Informatikos institutas} \\
-\textit{Matematikos if informatikos fakultetas}\\
-Vilnius, Lietuva \\
-epastas@epastas.lt}
+rugile.vasaityte@mif.stud.vu.lt}
 }
 
 \maketitle
 
 \begin{abstract}
 Santrauka kokia problema spręsta. Ką taikėte, kokie rezultatai. 
+
+Šiame tyrime analizuojami orų prognozių modeliai. Atlikome lyginamąją analizę naudodami iš anksto apmokytus orų prognozių modelius, tokius kaip Pangu-Weather \cite{bi2023accurate}, FourCastNet \cite{pathak2022fourcastnet}, naudojant ERA5 duomenų rinkinį \cite{data}. Gauti dviejų modelių spėjimai palyginti su tikrais duomenimis ir tarpusavyje. Pangu-Weather modelis nuspėja orus su mažesne paklaida negu FourCastNet modelis.
+
 \end{abstract}
 
 \begin{IEEEkeywords}
-5-6 Raktiniai žodžiai
+gilusis mokymasis, laiko eilutės, orų prognozės, 
 \end{IEEEkeywords}
 
 \section{Įvadas}
 Pristatote problemą
 
+ Vidutinio laikotarpio prognozės yra svarbios siekiant priimti sprendimus įvairiose srityse, pradedant nuo atsinaujinančios energijos iki agrikultūros, tačiau jas atlikti tiksliai reikalauja daug resursų.
+
+Prognozės dažniausiai grindžiamos skaitmeniniu orų prognozavimu (NWP), kuris prasideda nuo apibrėžtų fizikos lygčių, vėliau paverstų į kompiuterinius algoritmus, vykdomus superkompiuteriuose. Tačiau lygčių ir algoritmų kūrimas užima daug laiko ir reikalauja gilių žinių, taip pat brangių skaičiavimo išteklių, kad būtų galima tiksliai prognozuoti.
+
+Gilusis mokymasis siūlo kitokį metodą: vietoj fizinių lygčių naudojami duomenys orų prognozavimo sistemai sukurti. Tokie modeliai siūlo mažesnes skaičiavimo sąnaudas, palyginti su NWP modeliais \cite{schultz2021}. Pangu-Weather \cite{bi2023accurate} ir FourCastNet  (Fourier ForeCasting Neural Network) \cite{pathak2022fourcastnet} yra apmokyti dešimtmečiais istorinių orų duomenimimis, kad modelis prognozuotų orų raidą. 
+
 \section{Metodai}
 
-\subsection{Metodas A}
+
+\subsection{FourCastNet modelio architektūros apžvalga}
+
+FourCastNet modelio architektūros pagrindą sudaro regėjimo transformatoriai, kurie praktiniuose taikymuose gali pakeisti konvoliucinius neuroninius tinklus (CNNs) dėl savo gebėjimo išgauti gerus rezultatus naudojant reliatyviai nedidelius skaičiavimams skirtus išteklius \cite{dosovitskiy2020image}. Orų prognozės problema reikalauja didelės rezoliucijos įvesties duomenų ir rezultatų norint, kad jie būtų naudingi praktikoje ir tai yra problema, nes regėjimo transformatorių principas yra žetonų maišymo algoritmas, kuris turi kvadratinę priklausomybę nuo įvesties pikselių skaičiaus \cite{guibas2021adaptive}. Dėl šios priežasties FourCastNet architektūra yra patobulinta naudojant Furjė Neuroninų Operatorių (FNO) mokymosi principu, kuris, išsprendžia žetonų maišymo problemą ir padaro algoritmą nepriklausomą nuo įvesties duomenų rezoliucijos \cite{guibas2021adaptive}. Ši architektūra yra viena iš pirmųjų, kuri savo laiku pasiūlė praktikoje pritaikomą alternatyvą , kuri galėtų konkuruoti su skaitmeninių orų prognozavimų sistemoms dėl savo greičio ir mažų energijos sąnaudų, bet ne dėl tikslesnių rezultatų  \cite{pathak2022fourcastnet}.
+
+\begin{figure}[htb!] % puslapio viršuje
+\centerline{\includegraphics[width=0.5\textwidth]{img/fourcastnet-architecture.png}}
+\caption{FourCastNet architektūra}
+\label{fig1}
+\end{figure}
+
+\subsection{Pangu-weather modelio architektūros apžvalga}
+
+Pangu-weather modelio architektūrą sudaro .... Šis modelis taiko gabalėlių įstatymo (path embedding) tiesinį sluoksnį, kuris sumažiną įvesties duomenų dydį tolimesniems sluoksniams. Toliau seka simetrinė enkoderio ir dekoderio pora, kur kiekvienas iš jų turi po 8 sluoksnius. Pirmi du enkoderio sluoksniai nekeičia įvesties dimensijų, tačiau padidina įvesties duomenų kanalų skaičių. Tolimesni 6 enkoderio sluoksniai mažina įvesties dimensiją naudojant Swin tranformerius, kurie leidžia efektyviau atlikti dėmesio skaičiavimus (attention) padalinant įvesties duomenis į nepersidengiančius langus \cite{liu2021swin}. Dekoderis
+
+\begin{figure}[htb!] % puslapio viršuje
+\centerline{\includegraphics[width=0.5\textwidth]{img/pangu-weather-architecture.png}}
+\caption{Pangu-Weather architektūra}
+\label{fig1}
+\end{figure}
 
 Pristatote naudojamus metodus
 
@@ -102,7 +112,23 @@ Taikytas modelis ~\eqref{eq:lygtis2}.
 
 
 \section{Duomenys}
-Aprašote naudojamus duomenis.
+
+\subsection{Duomenų rinkinys}
+Modeliui testuoti buvo naudojamas „ERA5 hourly data on single levels from 1940 to present“ duomenų rinkinys iš Copernicus Climate Data Store (CDS). CDS suteikia vieną prieigos tašką prie kokybiškų klimato duomenų rinkinių, gautus iš Žemės stebėjimų. Prieiga prie duomenų yra atvira, nemokama ir neribota. 
+
+Naudojamas duomenų rinkinys ERA5 \cite{data} laikomas vienu geriausiu žinomu rinkiniu vertinti daugumą atmosferos kintamųjų \cite{evaluationoftheERA5}. ERA5 yra penktosios kartos ECMWF reanalizė, duomenys prieinami nuo 1940 metų, suteikiamas globalinis padengimas. 
+
+\subsection{Duomenų formatas}
+Duomenys išsaugoti GRIB (GRIdded Binary or General Regularly-distributed Information in Binary form). GRIB yra glaustas duomenų formatas, dažnai naudojamas meteorologijoje istoriniams ir prognoziniams orų duomenims saugoti. Kiekvienas GRIB įrašas turi dvi dalis - dalį, kuri apibūdina įrašą, tai yra antraštė, ir pačius dvejetainius duomenis. Duomenimis manipuliuoti buvo naudojama cfgrib Python biblioteka, sukurta skaityti ir rašyti GRIB failus naudojant xarray biblioteką.   
+
+\subsection{Testuojami duomenys}
+Pangu-Weather \cite{bi2023accurate} ir FourCastNet \cite{pathak2022fourcastnet} buvo testuojami nuo 0-inės laiko eilutės 2024-05-01T12:00:00, 5 laiko eilutes į priekį kas 6 valandas. Lyginami duomenys apėmė Šiaurės Rytų Europos regioną, tyrime vaizduojami šie parametrai:
+\begin{enumerate}
+\item 2 metrų aukštyje nustatyta temperatūra, K. Šis parametras nurodo oro temperatūrą dviem metrais virš žemės, vandens arba vidaus vandenų paviršiaus.
+\item 10 metrų aukštyje nustatytos vėjo U komponentės (rytinė kryptis), m/s. Šis parametras nurodo oro srauto greitį, judant į rytus, esant dešimties metrų aukštyje nuo Žemės paviršiaus.
+\item 10 metrų aukštyje nustatytos vėjo V komponentės (šiaurinė kryptis), m/s. Šis parametras apibūdina oro srauto greitį, judant į šiaurę, esant dešimties metrų aukštyje nuo Žemės paviršiaus. 
+\end{enumerate}
+Šie duomenys padeda suprasti horizontalaus 10 metrų aukščio vėjo greitį ir kryptį, sujungus U ir V vėjo komponentes.
 
 \subsection{Equations}
 
@@ -126,30 +152,28 @@ a & b & c &  d \\
 \end{center}
 \end{table}
 
-\begin{figure}[!h] % įterpti čia
-\centerline{\includegraphics{fig1.png}}
-\caption{Paveikslėlio aprašas.}
-\label{fig}
+% \begin{figure}[!h] % įterpti čia
+% \centerline{\includegraphics{fig1.png}}
+% \caption{Paveikslėlio aprašas.}
+% \label{fig}
+% \end{figure}
+
+\newpage
+\section{Rezultatai}
+
+~\ref{fig1} pav. pavaizduota 0-inės laiko eilutės 2024-05-01T12:00:00 parametrai Šiaurės-Rytų Žemės dalyje. Tai įvesties duomenys naudojami abiems modeliams testuoti.
+
+\begin{figure}[htb!] % puslapio viršuje
+\centerline{\includegraphics[width=0.8\textwidth]{img/frame_0_delay-1s.png}}
+\caption{Įvesties duomenys. Tikra vėjo kryptis, greitis ir temperatūra 2024-05-01T12:00:00}
+\label{fig1}
 \end{figure}
 
 
-\section{Rezultatai}
-
-\begin{figure*}[ht] % puslapio viršuje
-\centerline{\includegraphics{fig1.png}}
-\caption{Paveikslėlio aprašas.}
-\label{fig}
-\end{figure*}
-
-
-\lipsum[2-10]
-
-
-
-
-
+%\lipsum[2-10]
 
 Cituojame šaltinį \cite{lecun2015deep}.
+Cituojame šaltinį \cite{bi2023accurate}.
 
 \bibliographystyle{plain}
 \bibliography{saltiniai}
