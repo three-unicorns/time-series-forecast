@@ -1,8 +1,11 @@
 #%%
-import cartopy.crs as ccrs
-import matplotlib.pyplot as plt
-import xarray as xr
-import cfgrib
+# for geospatial data processing
+import cartopy.crs as ccrs 
+import matplotlib.pyplot as plt 
+# working with GRIB files
+import xarray as xr 
+# handling GRIB files
+import cfgrib 
 
 lon_min = -20
 lon_max = 45
@@ -13,8 +16,6 @@ lat_max = 60
 # lon_max = 26.8
 # lat_min = 53.9
 # lat_max = 56.4
-
-
 
 def plot_dataset(wind : xr.Dataset, temp : xr.DataArray = None, vmax=40, vmin=-40, cmap="viridis", title=None):
     projection = ccrs.Mercator()
@@ -136,6 +137,7 @@ ani.save("/workspace/pangu-diff.gif", fps=1)
 diff = real["t2m"] - crop_temp["t2m"]
 diff *= diff
 # %%
+# TEMPERATURE RMSE
 import numpy as np
 arr = {}
 for i in range(1,6):
