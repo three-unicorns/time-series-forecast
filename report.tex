@@ -1,12 +1,15 @@
 \documentclass[conference]{IEEEtran}
 \IEEEoverridecommandlockouts
 
+%\usepackage[showframe]{geometry}% http://ctan.org/pkg/geometry
+
 \usepackage[utf8]{inputenc}
 \usepackage[lithuanian]{babel}
 \usepackage[T1]{fontenc}
 \renewcommand\IEEEkeywordsname{Raktažodžiai}
 
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{hyperref}
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
@@ -21,8 +24,6 @@
 
 
 \usepackage{lipsum}  
-
-
 
 
 \begin{document}
@@ -51,18 +52,14 @@ rugile.vasaityte@mif.stud.vu.lt}
 \maketitle
 
 \begin{abstract}
-Santrauka kokia problema spręsta. Ką taikėte, kokie rezultatai. 
-
-Šiame tyrime analizuojami orų prognozių modeliai. Atlikome lyginamąją analizę naudodami iš anksto apmokytus orų prognozių modelius, tokius kaip Pangu-Weather \cite{bi2023accurate}, FourCastNet \cite{pathak2022fourcastnet}, naudojant ERA5 duomenų rinkinį \cite{data}. Gauti dviejų modelių spėjimai palyginti su tikrais duomenimis ir tarpusavyje. Pangu-Weather modelis nuspėja orus su mažesne paklaida negu FourCastNet modelis.
-
+Šiame tyrime analizuojami orų prognozių modeliai. Atlikome lyginamąją analizę naudodami iš anksto apmokytus orų prognozių modelius, tokius kaip Pangu-Weather \cite{bi2023accurate}, FourCastNet \cite{pathak2022fourcastnet}, naudojant ERA5 duomenų rinkinį \cite{data}. Gauti dviejų modelių spėjimai palyginti su tikrais duomenimis. PanguWeather modelis nuosekliai rodo žemesnes RMSE reikšmes visais žingsniais, palyginti su FourCastNet. Kodą galima peržiūrėti mūsų viešai prieinamoje \href{https://github.com/three-unicorns/time-series-forecast}{repozitorijoje}.
 \end{abstract}
 
 \begin{IEEEkeywords}
-gilusis mokymasis, laiko eilutės, orų prognozės, 
+gilusis mokymasis, laiko eilutės, orų prognozės
 \end{IEEEkeywords}
 
 \section{Įvadas}
-Pristatote problemą
 
  Vidutinio laikotarpio prognozės yra svarbios siekiant priimti sprendimus įvairiose srityse, pradedant nuo atsinaujinančios energijos iki agrikultūros, tačiau jas atlikti tiksliai reikalauja daug resursų.
 
@@ -75,7 +72,7 @@ Gilusis mokymasis siūlo kitokį metodą: vietoj fizinių lygčių naudojami duo
 
 \subsection{FourCastNet modelio architektūros apžvalga}
 
-FourCastNet modelio architektūros pagrindą sudaro regėjimo transformatoriai, kurie praktiniuose taikymuose gali pakeisti konvoliucinius neuroninius tinklus (CNNs) dėl savo gebėjimo išgauti gerus rezultatus naudojant reliatyviai nedidelius skaičiavimams skirtus išteklius \cite{dosovitskiy2020image}. Orų prognozės problema reikalauja didelės rezoliucijos įvesties duomenų ir rezultatų norint, kad jie būtų naudingi praktikoje ir tai yra problema, nes regėjimo transformatorių principas yra žetonų maišymo algoritmas, kuris turi kvadratinę priklausomybę nuo įvesties pikselių skaičiaus \cite{guibas2021adaptive}. Dėl šios priežasties FourCastNet architektūra yra patobulinta naudojant Furjė Neuroninų Operatorių (FNO) mokymosi principu, kuris, išsprendžia žetonų maišymo problemą ir padaro algoritmą nepriklausomą nuo įvesties duomenų rezoliucijos \cite{guibas2021adaptive}. Ši architektūra yra viena iš pirmųjų, kuri savo laiku pasiūlė praktikoje pritaikomą alternatyvą , kuri galėtų konkuruoti su skaitmeninių orų prognozavimų sistemoms dėl savo greičio ir mažų energijos sąnaudų, bet ne dėl tikslesnių rezultatų  \cite{pathak2022fourcastnet}.
+FourCastNet modelio architektūros pagrindą sudaro regėjimo transformatoriai, kurie praktiniuose taikymuose gali pakeisti konvoliucinius neuroninius tinklus (CNNs) dėl savo gebėjimo išgauti gerus rezultatus naudojant reliatyviai nedidelius skaičiavimams skirtus išteklius \cite{dosovitskiy2020image}. Orų prognozės problema reikalauja didelės rezoliucijos įvesties duomenų ir rezultatų norint, kad jie būtų naudingi praktikoje. Tai yra problema, nes regėjimo transformatorių principas yra žetonų maišymo algoritmas, kuris turi kvadratinę priklausomybę nuo įvesties pikselių skaičiaus \cite{guibas2021adaptive}. Dėl šios priežasties FourCastNet architektūra yra patobulinta naudojant Furjė Neuroninų Operatorių (FNO) mokymosi principu, kuris išsprendžia žetonų maišymo problemą ir padaro algoritmą nepriklausomą nuo įvesties duomenų rezoliucijos \cite{guibas2021adaptive}. Ši architektūra yra viena iš pirmųjų, kuri savo laiku pasiūlė praktikoje pritaikomą alternatyvą, galinčią konkuruoti su skaitmeninių orų prognozavimų sistemoms dėl savo greičio ir mažų energijos sąnaudų, bet ne dėl tikslesnių rezultatų  \cite{pathak2022fourcastnet}.
 
 \begin{figure}[htb!] % puslapio viršuje
 \centerline{\includegraphics[width=0.5\textwidth]{img/fourcastnet-architecture.png}}
@@ -85,7 +82,7 @@ FourCastNet modelio architektūros pagrindą sudaro regėjimo transformatoriai, 
 
 \subsection{Pangu-weather modelio architektūros apžvalga}
 
-Pangu-weather modelio architektūrą sudaro .... Šis modelis taiko gabalėlių įstatymo (path embedding) tiesinį sluoksnį, kuris sumažiną įvesties duomenų dydį tolimesniems sluoksniams. Toliau seka simetrinė enkoderio ir dekoderio pora, kur kiekvienas iš jų turi po 8 sluoksnius. Pirmi du enkoderio sluoksniai nekeičia įvesties dimensijų, tačiau padidina įvesties duomenų kanalų skaičių. Tolimesni 6 enkoderio sluoksniai mažina įvesties dimensiją naudojant Swin tranformerius, kurie leidžia efektyviau atlikti dėmesio skaičiavimus (attention) padalinant įvesties duomenis į nepersidengiančius langus \cite{liu2021swin}. Dekoderis
+Pangu-weather modelio architektūrą sudaro enkoderio ir dekoderio pora kartu su lopinėlių įstatymo (patch embedding) ir atgavimo (patch recovery) sluoksniais \cite{bi2022pangu}. Lopinėlių įstatymo sluoksnis sumažina įvesties duomenų dydį prieš paduodant juos tolimesniems sluoksniams. Enkoderis ir dekoderis yra simetriški ir turi po 8 sluoksnius. Pirmi du enkoderio sluoksniai nekeičia įvesties dimensijų, tačiau padidina įvesties duomenų kanalų skaičių. Tolimesni 6 enkoderio sluoksniai mažina įvesties dimensiją naudojant Swin tranformerius, kurie leidžia efektyviau atlikti dėmesio skaičiavimus (self-attention) padalinant įvesties duomenis į nepersidengiančius langus \cite{liu2021swin}. Dekoderis analogiškai atlieka įvesties duomenų padidinimą (upsampling). Architektūroje taip pat numatyta antro enkoderio sluoksnio ir septinto dekoderio sluoksnio jungtis (concatination) ties kanalų dimensija. 
 
 \begin{figure}[htb!] % puslapio viršuje
 \centerline{\includegraphics[width=0.5\textwidth]{img/pangu-weather-architecture.png}}
@@ -93,22 +90,34 @@ Pangu-weather modelio architektūrą sudaro .... Šis modelis taiko gabalėlių 
 \label{fig1}
 \end{figure}
 
-Pristatote naudojamus metodus
+\newpage
+\subsection{Nuostolių funkcija}
+
+Šaknies vidurkio kvadrato paklaida (RMSE) randama pagal formulę:
 
 \begin{equation}
-\mathcal{L}({\bf X}, {\bf Y}) = \frac{1}{w \cdot h} \sum_{i=1}^h \sum_{j=1}^w (X_{i, j} - Y_{i, j})^2
+\mathcal{L} = \sqrt{\frac{1}{n} \sum_{i=1}^n (y_i - \hat{y}_i)^2}
 \label{eq:lygtis1}
 \end{equation}
 
-Taikyta nuostolių funkcija ~\eqref{eq:lygtis1}.
+Ši formulė apskaičiuoja prognozių klaidų  standartinį nuokrypį, matuojant, kiek prognozuojamos vertės skiriasi nuo faktinių verčių.
 
-\begin{align}
-y & = f(x) \nonumber \\
-f & = f_1(f_2(x))
-\label{eq:lygtis2}
-\end{align}
+% Pristatote naudojamus metodus
 
-Taikytas modelis ~\eqref{eq:lygtis2}.
+% \begin{equation}
+% \mathcal{L}({\bf X}, {\bf Y}) = \frac{1}{w \cdot h} \sum_{i=1}^h \sum_{j=1}^w (X_{i, j} - Y_{i, j})^2
+% \label{eq:lygtis1}
+% \end{equation}
+
+% Taikyta nuostolių funkcija ~\eqref{eq:lygtis1}.
+
+% \begin{align}
+% y & = f(x) \nonumber \\
+% f & = f_1(f_2(x))
+% \label{eq:lygtis2}
+% \end{align}
+
+% Taikytas modelis ~\eqref{eq:lygtis2}.
 
 
 \section{Duomenys}
@@ -130,50 +139,98 @@ Pangu-Weather \cite{bi2023accurate} ir FourCastNet \cite{pathak2022fourcastnet} 
 \end{enumerate}
 Šie duomenys padeda suprasti horizontalaus 10 metrų aukščio vėjo greitį ir kryptį, sujungus U ir V vėjo komponentes.
 
-\subsection{Equations}
-
-
-
-\subsection{Paveikslėliai ir lentelės}
-
-Paveikslėlį cituojame ``~\ref{fig} pav.''.
-
-Paveikslėlį cituojame ``~\ref{tab1} lentelė''.
-
-\begin{table}[htbp]
-\caption{Lentelės aprašas}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-a & b & c &  d \\
-\hline
-\end{tabular}
-\label{tab1}
-\end{center}
-\end{table}
-
 % \begin{figure}[!h] % įterpti čia
 % \centerline{\includegraphics{fig1.png}}
 % \caption{Paveikslėlio aprašas.}
 % \label{fig}
 % \end{figure}
 
-\newpage
 \section{Rezultatai}
 
-~\ref{fig1} pav. pavaizduota 0-inės laiko eilutės 2024-05-01T12:00:00 parametrai Šiaurės-Rytų Žemės dalyje. Tai įvesties duomenys naudojami abiems modeliams testuoti.
+~\ref{fig1} pav. pavaizduota 0-inės laiko eilutės 2024-05-01T12:00:00 parametrai Šiaurės-Rytų Žemės dalyje. Tai įvesties duomenys naudojami abiems modeliams testuoti. Pagal juos modeliai atliko prognozes 5 laiko eilutes į priekį. 
 
 \begin{figure}[htb!] % puslapio viršuje
-\centerline{\includegraphics[width=0.8\textwidth]{img/frame_0_delay-1s.png}}
+\centerline{\includegraphics[width=0.53\textwidth]{img/frame_0_delay-1s.png}}
 \caption{Įvesties duomenys. Tikra vėjo kryptis, greitis ir temperatūra 2024-05-01T12:00:00}
 \label{fig1}
 \end{figure}
 
+~\ref{fig5} pav., ~\ref{fig6} pav., ~\ref{fig7} pav., ~\ref{fig8} pav., ~\ref{fig9} pav. matomi realūs duomenys, FourCastNet ir PanguWeather prognozė.
 
-%\lipsum[2-10]
+~\ref{fig10} pav., ~\ref{fig11} pav., ~\ref{fig12} pav., ~\ref{fig13} pav., ~\ref{fig14} pav. matomi skirtumai tarp realių duomenų ir modelių prognozių.
 
-Cituojame šaltinį \cite{lecun2015deep}.
-Cituojame šaltinį \cite{bi2023accurate}.
+~\ref{fig4} pav. apskaičiuotas RMSE tarp realių duomenų ir modelių prognozių. 
+\begin{figure}[htb!] % puslapio viršuje
+\centerline{\includegraphics[width=0.5\textwidth]{img/RMSE.png}}
+\caption{Temperatūros RMSE}
+\label{fig4}
+\end{figure}
+
+PanguWeather nuosekliai parodo žemesnes RMSE reikšmes visais žingsniais, lyginant su FourCastNet. Tai leidžia manyti, kad PanguWeather yra tikslesnis prognozuojant temperatūrą modelis. Žemesnės RMSE reikšmės PanguWeather rodo, kad jis gali būti patikimesnis tokioms užduotims, kur reikalinga tiksli temperatūros prognozė. Visgi prognozę atlikti su PanguWeather užtruko 10 kartų ilgiau nei su FourCastNet 
+
+\begin{figure*}[!t]
+\centerline{\includegraphics[width=0.85\textwidth]{img/step1.png}}
+\caption{Vėjo kryptis, greitis ir temperatūra 2024-05-01T18:00:00}
+\label{fig5}
+\end{figure*}
+
+\begin{figure*}[htb!] % puslapio viršuje
+\centerline{\includegraphics[width=0.85\textwidth]{img/step2.png}}
+\caption{Vėjo kryptis, greitis ir temperatūra 2024-05-02T00:00:00}
+\label{fig6}
+\end{figure*}
+
+\begin{figure*}[htb!] % puslapio viršuje
+\centerline{\includegraphics[width=0.85\textwidth]{img/step3.png}}
+\caption{Vėjo kryptis, greitis ir temperatūra 2024-05-02T12:00:00}
+\label{fig7}
+\end{figure*}
+
+\begin{figure*}[htb!] % puslapio viršuje
+\centerline{\includegraphics[width=0.85\textwidth]{img/step4.png}}
+\caption{Vėjo kryptis, greitis ir temperatūra 2024-05-02T18:00:00}
+\label{fig8}
+\end{figure*}
+
+\begin{figure*}[htb!] % puslapio viršuje
+\centerline{\includegraphics[width=0.85\textwidth]{img/step5.png}}
+\caption{Vėjo kryptis, greitis ir temperatūra 2024-05-03T00:00:00}
+\label{fig9}
+\end{figure*}
+% %\lipsum[2-10]
+
+
+\begin{figure*}[htb!] % puslapio viršuje
+\centerline{\includegraphics[width=\textwidth]{img/diffstep1.png}}
+\caption{Skirtumas tarp modelių prognozių ir realių duomenų (FourCastNet ir PanguWeather)}
+\label{fig10}
+\end{figure*}
+
+\begin{figure*}[htb!] % puslapio viršuje
+\centerline{\includegraphics[width=\textwidth]{img/diffstep2.png}}
+\caption{Skirtumas tarp modelių prognozių ir realių duomenų (FourCastNet ir PanguWeather)}
+\label{fig11}
+\end{figure*}
+
+
+\begin{figure*}[htb!] % puslapio viršuje
+\centerline{\includegraphics[width=\textwidth]{img/diffstep3.png}}
+\caption{Skirtumas tarp modelių prognozių ir realių duomenų (FourCastNet ir PanguWeather) 2024-05-02T12:00:00}
+\label{fig12}
+\end{figure*}
+
+
+\begin{figure*}[htb!] % puslapio viršuje
+\centerline{\includegraphics[width=\textwidth]{img/diffstep4.png}}
+\caption{Skirtumas tarp modelių prognozių ir realių duomenų (FourCastNet ir PanguWeather) 2024-05-02T18:00:00}
+\label{fig13}
+\end{figure*}
+
+\begin{figure*}[htb!] % puslapio viršuje
+\centerline{\includegraphics[width=\textwidth]{img/diffstep5.png}}
+\caption{Skirtumas tarp modelių prognozių ir realių duomenų (FourCastNet ir PanguWeather) 2024-05-03T00:00:00}
+\label{fig14}
+\end{figure*}
 
 \bibliographystyle{plain}
 \bibliography{saltiniai}
